@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172033">
+<title>復習トラッカー | 東大理一</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#172033;--muted:#697386;--line:#e3e8f0;--blue:#315efb;--blue2:#eaf0ff;--green:#16845b;--amber:#a96308;--red:#c53a46;--shadow:0 8px 24px rgba(25,40,75,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:#172033;color:white;padding:24px 18px 22px}header .eyebrow{font-size:12px;letter-spacing:.12em;color:#b9c6e5;font-weight:700}header h1{font-size:25px;line-height:1.2;margin:7px 0 8px}header p{margin:0;color:#d4dbee;font-size:13px}
+main{max-width:1050px;margin:auto;padding:16px 14px 42px}.nav{display:flex;gap:8px;overflow:auto;margin-bottom:16px}.nav button{white-space:nowrap;border:1px solid var(--line);background:white;border-radius:999px;padding:10px 15px;color:var(--muted);font-weight:700}.nav button.active{background:var(--blue);border-color:var(--blue);color:white}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.stat,.panel,.item{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.stat{padding:14px}.stat .label{font-size:12px;color:var(--muted)}.stat .num{font-size:27px;font-weight:800;margin-top:3px}.stat .sub{font-size:11px;color:var(--muted)}
+.panel{padding:17px;margin-bottom:14px}.panel h2{font-size:17px;margin:0 0 12px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 10px}.section-head h2{margin:0;font-size:18px}
+.progress{height:9px;background:#edf0f6;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:var(--blue);border-radius:99px}
+.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.muted{color:var(--muted)}.small{font-size:12px}.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:750;background:#eef1f6;color:#4e596d}.pill.blue{background:var(--blue2);color:#2348cf}.pill.green{background:#e3f6ee;color:#12704d}.pill.amber{background:#fff1d9;color:#925400}.pill.red{background:#ffe7e9;color:#a52a35}
+button,.button{cursor:pointer;font:inherit}.primary{background:var(--blue);color:white;border:0;border-radius:10px;padding:11px 15px;font-weight:750}.secondary{background:white;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:10px 13px;font-weight:650}.danger{color:var(--red);border-color:#f0cbd0}.full{width:100%}
+label{display:block;font-size:12px;color:#505b70;font-weight:750;margin-bottom:5px}input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1px solid #d8deea;border-radius:10px;padding:11px;width:100%;min-width:0}textarea{min-height:75px;resize:vertical}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field.wide{grid-column:1/-1}.form-actions{display:flex;gap:8px;margin-top:14px}.hidden{display:none!important}
+.items{display:grid;gap:10px}.item{padding:14px}.item h3{font-size:16px;margin:7px 0 5px}.item p{margin:4px 0}.item .meta{display:flex;flex-wrap:wrap;gap:6px}.item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.item-actions button{font-size:12px;padding:8px 10px}
+.empty{padding:26px 12px;text-align:center;color:var(--muted)}.empty strong{display:block;color:var(--ink);margin-bottom:4px}
+.due-line{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--line)}.due-line:last-child{border-bottom:0}.dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:none}.dot.red{background:var(--red)}.dot.amber{background:#e6a12a}.due-line .grow{flex:1;min-width:0}.due-line .grow strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subject-bars{display:grid;gap:12px}.subject-row{display:grid;grid-template-columns:64px 1fr 35px;gap:9px;align-items:center;font-size:12px}.subject-row .progress{height:8px}
+.chart{display:flex;align-items:end;gap:10px;height:130px;padding:12px 4px 0;border-bottom:1px solid var(--line)}.barcol{height:100%;flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:6px;min-width:0}.bar{width:min(34px,70%);background:#7f9aff;border-radius:6px 6px 0 0;min-height:3px}.bar.current{background:var(--blue)}.barlabel{font-size:10px;color:var(--muted)}
+.notice{background:#f0f4ff;border:1px solid #dbe5ff;border-radius:12px;padding:12px;font-size:12px;color:#34476f}
+.suggest-wrap{position:relative}.suggest{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid #d8deea;border-radius:10px;box-shadow:var(--shadow);max-height:220px;overflow:auto;z-index:10}.suggest button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:11px;font-size:14px;color:var(--ink)}.suggest button:last-child{border-bottom:0}
+footer{font-size:11px;color:var(--muted);text-align:center;padding:18px 0}
+@media(max-width:650px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}header{padding-top:calc(20px + env(safe-area-inset-top,0px))}input,select,textarea{font-size:16px}.stat .num{font-size:24px}.panel{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">UTOKYO · SCIENCE I</div>
+  <h1>復習トラッカー</h1>
+  <p>解き直した回数より、「次も自力で解ける」を見える化。</p>
+</header>
+<main>
+  <div class="nav" role="tablist">
+    <button class="active" data-tab="home">ダッシュボード</button>
+    <button data-tab="add">問題を登録</button>
+    <button data-tab="list">復習リスト</button>
+    <button data-tab="data">データ管理</button>
+  </div>
+
+  <section id="tab-home">
+    <div class="grid">
+      <div class="stat"><div class="label">登録した問題</div><div class="num" id="stat-total">0</div><div class="sub">これまでの復習対象</div></div>
+      <div class="stat"><div class="label">今日やる復習</div><div class="num" id="stat-due">0</div><div class="sub">期限到来・期限超過</div></div>
+      <div class="stat"><div class="label">自力で完答</div><div class="num" id="stat-mastered">0</div><div class="sub">最終確認で完答</div></div>
+      <div class="stat"><div class="label">要注意</div><div class="num" id="stat-risk">0</div><div class="sub">同じ原因が再発</div></div>
+    </div>
+    <div class="panel">
+      <div class="row between"><h2>今週の復習進捗</h2><strong id="week-progress-text">0%</strong></div>
+      <div class="progress"><span id="week-progress" style="width:0%"></span></div>
+      <p class="small muted" id="week-progress-sub">復習を記録すると進捗が表示されます。</p>
+    </div>
+    <div class="panel">
+      <h2>今日の復習</h2>
+      <div id="due-list" class="items"><div class="empty"><strong>復習対象はまだありません</strong>週末の過去問・模試を登録してみよう。</div></div>
+    </div>
+    <div class="panel">
+      <h2>科目別・登録問題数</h2>
+      <div id="subject-bars" class="subject-bars"><p class="muted small">問題を登録すると科目別に表示されます。</p></div>
+    </div>
+    <div class="panel">
+      <h2>復習サイクル</h2>
+      <div class="chart" id="cycle-chart"></div>
+      <p class="small muted">目安：登録当日に原因分析 → 1〜2日後に再演習 → 4〜7日後に定着確認。日付は問題ごとに調整できます。</p>
+    </div>
+    <div class="notice">使い方：問題を登録し、復習するたびに「再演習を記録」。解説を見ずに方針から完答できたら「自力で完答」を押してください。</div>
+  </section>
+
+  <section id="tab-add" class="hidden">
+    <div class="panel">
+      <h2 id="form-title">復習する問題を登録</h2>
+      <form id="problem-form">
+        <input type="hidden" id="edit-id">
+        <div class="form-grid">
+          <div class="field wide"><label for="title">問題名 *</label><div class="suggest-wrap"><input id="title" required autocomplete="off" placeholder="例：東大数学 2025年度 第6問"><div id="title-suggest" class="suggest hidden"></div></div></div>
+          <div class="field"><label for="source">出典</label><select id="source"><option>東大過去問</option><option>模試</option><option>問題集</option><option>その他</option></select></div>
+          <div class="field"><label for="date">解いた日</label><input id="date" type="date"></div>
+          <div class="field"><label for="subject">科目 *</label><select id="subject" required><option>数学</option><option>物理</option><option>化学</option></select></div>
+          <div class="field"><label for="topic">分野</label><input id="topic" placeholder="例：複素数平面"></div>
+          <div class="field"><label for="cause">主な失点原因</label><select id="cause"><option>発想・方針不足</option><option>知識・公式不足</option><option>計算・論証ミス</option><option>時間不足</option><option>条件の読み落とし</option><option>知識の取り出し不足</option><option>その他</option></select></div>
+          <div class="field"><label for="priority">優先度</label><select id="priority"><option value="高">高</option><option value="中" selected>中</option><option value="低">低</option></select></div>
+          <div class="field wide"><label for="trigger">解法の決め手・次回の着眼点</label><textarea id="trigger" placeholder="例：条件の対称性に着目して式を整理する"></textarea></div>
+          <div class="field wide"><label for="notes">メモ（どこで詰まったか等）</label><textarea id="notes" placeholder="例：解説を見れば分かるが、自力では方針が出なかった"></textarea></div>
+        </div>
+        <div class="form-actions"><button class="primary" type="submit">保存する</button><button class="secondary" type="button" id="cancel-edit">クリア</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section id="tab-list" class="hidden">
+    <div class="panel">
+      <h2>復習リスト</h2>
+      <div class="form-grid">
+        <div><label for="filter-subject">科目</label><select id="filter-subject"><option value="">すべて</option><option>数学</option><option>物理</option><option>化学</option></select></div>
+        <div><label for="filter-status">状態</label><select id="filter-status"><option value="">すべて</option><option value="未着手">未着手</option><option value="復習中">復習中</option><option value="要注意">要注意</option><option value="自力で完答">自力で完答</option></select></div>
+        <div class="field wide"><label for="search">キーワード</label><input id="search" placeholder="問題名・分野・原因で検索"></div>
+      </div>
+    </div>
+    <div id="all-items" class="items"></div>
+  </section>
+
+  <section id="tab-data" class="hidden">
+    <div class="panel">
+      <h2>データの保存・移行</h2>
+      <p class="muted small">この試作版は、このブラウザ内にデータを保存します。同じ端末・同じブラウザでは再度開いても基本的に残りますが、別端末とは自動同期されません。</p>
+      <div class="row" style="flex-wrap:wrap;margin-top:12px">
+        <button class="primary" id="export-btn">バックアップを書き出す</button>
+        <button class="secondary" id="import-btn">バックアップを読み込む</button>
+        <input id="import-file" type="file" accept="application/json,.json" class="hidden">
+      </div>
+      <p id="data-message" class="small muted"></p>
+    </div>
+    <div class="panel">
+      <h2>全データを削除</h2>
+      <p class="small muted">登録した問題と復習履歴を削除します。先にバックアップを取ることをおすすめします。</p>
+      <button class="secondary danger" id="clear-btn">すべて削除</button>
+    </div>
+    <div class="panel">
+      <h2>復習の判定ルール</h2>
+      <ul class="small">
+        <li><b>未着手：</b>まだ再演習を記録していない</li>
+        <li><b>復習中：</b>再演習はしたが、安定して自力完答できていない</li>
+        <li><b>要注意：</b>一度完答した後に同じ問題・原因で再びつまずいた</li>
+        <li><b>自力で完答：</b>解説なしで方針から答案を完成できた</li>
+      </ul>
+    </div>
+  </section>
+  <footer>復習トラッカー · 2027年度 東大理一対策</footer>
+</main>
+<script>
+const KEY='utokyo_review_tracker_v1';
+let problems=[];
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const addDays=(date,n)=>{let d=new Date((date||today())+'T12:00:00');d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const fmt=d=>d?d.replace(/-/g,'/').slice(2):'未設定';
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY)||'[]');problems=Array.isArray(d)?d:[]}catch(e){problems=[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(problems))}catch(e){alert('保存できませんでした。ブラウザの保存領域が使えない状態です。「データ管理」からバックアップを書き出してください。')}render()}
+function clean(p,i){if(!p||typeof p!=='object')return null;const t=typeof p.title==='string'?p.title.trim():'';if(!t)return null;const id=String(p.id==null?'':p.id).replace(/[^\w-]/g,'')||`${Date.now()}${i}`;const ok=/^\d{4}-\d{2}-\d{2}$/.test(p.nextDate||'');return {...p,id,title:t,subject:p.subject||'数学',history:Array.isArray(p.history)?p.history:[],mastered:!!p.mastered,risk:!!p.risk,nextDate:ok?p.nextDate:(p.mastered?null:addDays(today(),1))}}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function status(p){if(p.risk)return '要注意';if(p.mastered)return '自力で完答';if((p.history||[]).length)return '復習中';return '未着手'}
+function statusPill(s){let c=s==='自力で完答'?'green':s==='要注意'?'red':s==='復習中'?'blue':'amber';return `<span class="pill ${c}">${s}</span>`}
+function isDue(p){return !p.mastered && p.nextDate && p.nextDate<=today()}
+function nextFor(p){let h=(p.history||[]).length;return addDays(today(),h===0?1:h===1?3:7)}
+function dueText(p){if(!p.nextDate)return '再演習日未設定';if(p.nextDate<today())return `期限超過 · ${fmt(p.nextDate)}`;if(p.nextDate===today())return '今日';return fmt(p.nextDate)}
+function card(p){const due=isDue(p);return `<article class="item">
+  <div class="row between"><div class="meta"><span class="pill">${esc(p.subject)}</span><span class="pill">${esc(p.source||'その他')}</span><span class="pill ${p.priority==='高'?'red':p.priority==='中'?'amber':''}">優先度 ${esc(p.priority||'中')}</span></div>${statusPill(status(p))}</div>
+  <h3>${esc(p.title)}</h3><p class="small muted">${esc(p.topic||'分野未設定')} · 解いた日 ${fmt(p.date)}</p>
+  <p class="small"><b>失点原因：</b>${esc(p.cause||'未分類')}</p>
+  ${p.trigger?`<p class="small"><b>次回の着眼点：</b>${esc(p.trigger)}</p>`:''}
+  <div class="row between" style="margin-top:9px"><span class="small ${due?'':'muted'}"><b>${due?'復習期限：':''}</b>${due?dueText(p):`次回：${dueText(p)}`}</span><span class="small muted">再演習 ${ (p.history||[]).length }回</span></div>
+  <div class="item-actions">
+    <button class="primary" onclick="review('${p.id}')">再演習を記録</button>
+    <button class="secondary" onclick="master('${p.id}')">自力で完答</button>
+    <button class="secondary" onclick="edit('${p.id}')">編集</button>
+    <button class="secondary danger" onclick="removeItem('${p.id}')">削除</button>
+  </div>
+  ${p.notes?`<p class="small muted" style="margin-top:10px">${esc(p.notes)}</p>`:''}
+</article>`}
+function render(){
+  $('stat-total').textContent=problems.length;
+  
+  $('stat-due').textContent=problems.filter(isDue).length;
+  $('stat-mastered').textContent=problems.filter(p=>p.mastered).length;
+  $('stat-risk').textContent=problems.filter(p=>p.risk).length;
+  const weekStart=addDays(today(),-((new Date().getDay()+6)%7));const weekEnd=addDays(weekStart,6);
+  const reviewedThisWeek=p=>(p.lastReviewed||'')>=weekStart;const week=problems.filter(p=>reviewedThisWeek(p)||(!p.mastered&&p.nextDate&&p.nextDate<=weekEnd));
+  const done=week.filter(reviewedThisWeek).length;
+  const pct=week.length?Math.round(done/week.length*100):0;
+  $('week-progress-text').textContent=pct+'%';$('week-progress').style.width=pct+'%';
+  $('week-progress-sub').textContent=week.length?`今週の復習対象 ${week.length} 件のうち ${done} 件を復習済み`:'今週の復習対象はまだありません。';
+  const rank={'高':0,'中':1,'低':2};const dueAll=problems.filter(isDue).sort((a,b)=>(a.nextDate||'').localeCompare(b.nextDate||'')||((rank[a.priority]===undefined?1:rank[a.priority])-(rank[b.priority]===undefined?1:rank[b.priority])));const due=dueAll.slice(0,5);
+  $('due-list').innerHTML=due.length?due.map(p=>`<div class="due-line"><span class="dot ${p.nextDate<today()?'red':p.priority==='高'?'amber':''}"></span><div class="grow"><strong>${esc(p.title)}</strong><span class="small muted">${esc(p.subject)} · ${esc(p.cause)}</span></div><button class="secondary" onclick="review('${p.id}')">記録</button></div>`).join('')+(dueAll.length>5?`<p class="small muted" style="margin:6px 0 0">ほか ${dueAll.length-5} 件は「復習リスト」で確認できます。</p>`:''):'<div class="empty"><strong>今日の復習はありません</strong>期限が来た問題がここに表示されます。</div>';
+  const subjects=['数学','物理','化学'];
+  const counts=Object.fromEntries(subjects.map(s=>[s,problems.filter(p=>p.subject===s).length]));const max=Math.max(1,...Object.values(counts));$('subject-bars').innerHTML=subjects.map(s=>{const n=counts[s];return `<div class="subject-row"><span>${s}</span><div class="progress"><span style="width:${n/max*100}%;display:block;height:100%;background:${s==='数学'?'#315efb':'#8da4f9'};border-radius:99px"></span></div><b>${n}</b></div>`}).join('');
+  const labels=['登録','+1日','+3日','+7日'];const heights=[30,55,78,100];
+  $('cycle-chart').innerHTML=labels.map((l,i)=>`<div class="barcol"><div class="bar ${i===0?'current':''}" style="height:${heights[i]}%"></div><span class="barlabel">${l}</span></div>`).join('');
+  const fs=$('filter-subject').value, fst=$('filter-status').value, q=$('search').value.toLowerCase().trim();
+  const filtered=problems.filter(p=>(!fs||p.subject===fs)&&(!fst||status(p)===fst)&&(!q||[p.title,p.topic,p.cause,p.trigger,p.notes].join(' ').toLowerCase().includes(q))).sort((a,b)=>(isDue(b)?1:0)-(isDue(a)?1:0)||(a.nextDate||'9999').localeCompare(b.nextDate||'9999'));
+  $('all-items').innerHTML=filtered.length?filtered.map(card).join(''):'<div class="panel empty"><strong>該当する問題がありません</strong>条件を変えるか、新しい問題を登録してください。</div>';
+}
+function switchTab(tab){document.querySelectorAll('[id^="tab-"]').forEach(s=>s.classList.add('hidden'));$('tab-'+tab).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='list')render();window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+$('problem-form').addEventListener('submit',e=>{e.preventDefault();const id=$('edit-id').value||String(Date.now());const old=problems.find(p=>p.id===id)||{};const p={...old,id,title:$('title').value.trim(),source:$('source').value,date:$('date').value||today(),subject:$('subject').value,topic:$('topic').value.trim(),cause:$('cause').value,priority:$('priority').value,trigger:$('trigger').value.trim(),notes:$('notes').value.trim(),history:old.history||[],mastered:old.mastered||false,risk:old.risk||false,nextDate:old.nextDate||addDays(today(),1),created:old.created||today()};const ix=problems.findIndex(x=>x.id===id);if(ix>=0)problems[ix]=p;else problems.push(p);save();resetForm();switchTab('list')});
+function resetForm(){$('problem-form').reset();$('edit-id').value='';$('date').value=today();$('form-title').textContent='復習する問題を登録'}
+$('cancel-edit').addEventListener('click',resetForm);
+window.review=id=>{const p=problems.find(x=>x.id===id);if(!p)return;const wasMastered=p.mastered;p.history=p.history||[];p.history.push({date:today(),result:'再演習'});p.lastReviewed=today();p.mastered=false;if(wasMastered)p.risk=true;p.nextDate=nextFor(p);save()};
+window.master=id=>{const p=problems.find(x=>x.id===id);if(!p)return;p.mastered=true;p.risk=false;p.lastReviewed=today();p.masteredDate=today();p.nextDate=addDays(today(),7);save()};
+window.edit=id=>{const p=problems.find(x=>x.id===id);if(!p)return;switchTab('add');if(p.subject&&![...$('subject').options].some(o=>o.value===p.subject))$('subject').add(new Option(p.subject));$('edit-id').value=p.id;['title','source','date','subject','topic','cause','priority','trigger','notes'].forEach(k=>$(k).value=p[k]||'');$('form-title').textContent='問題を編集';window.scrollTo({top:0,behavior:'smooth'})};
+window.removeItem=id=>{const p=problems.find(x=>x.id===id);if(p&&confirm(`「${p.title}」を削除しますか？`)){problems=problems.filter(x=>x.id!==id);save()}};
+['filter-subject','filter-status','search'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));
+$('export-btn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({app:'復習トラッカー',version:1,exportedAt:new Date().toISOString(),problems},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`復習トラッカー_backup_${today()}.json`;a.click();URL.revokeObjectURL(a.href);$('data-message').textContent='バックアップを書き出しました。'});
+$('import-btn').addEventListener('click',()=>$('import-file').click());
+$('import-file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());const incoming=Array.isArray(data)?data:data.problems;if(!Array.isArray(incoming))throw new Error('形式');const existing=new Set(problems.map(p=>p.id));let count=0;incoming.forEach((raw,i)=>{const p=clean(raw,i);if(p&&!existing.has(p.id)){problems.push(p);existing.add(p.id);count++}});save();$('data-message').textContent=`${count}件を追加しました。同じIDの問題は重複登録していません。`}catch(err){$('data-message').textContent='読み込めませんでした。正しいバックアップファイルを選んでください。'}e.target.value=''});
+$('clear-btn').addEventListener('click',()=>{if(confirm('全データを削除します。この操作は取り消せません。')){problems=[];save();$('data-message').textContent='すべてのデータを削除しました。'}});
+function showSuggest(){const q=$('title').value.trim().toLowerCase();const list=[...new Set(problems.map(p=>p.title).filter(Boolean).reverse())].filter(t=>t.toLowerCase()!==q&&t.toLowerCase().includes(q)).slice(0,8);const box=$('title-suggest');box.innerHTML=list.map(t=>`<button type="button" data-t="${esc(t)}">${esc(t)}</button>`).join('');box.classList.toggle('hidden',!list.length)}
+$('title').addEventListener('input',showSuggest);
+$('title').addEventListener('focus',showSuggest);
+$('title').addEventListener('blur',()=>setTimeout(()=>$('title-suggest').classList.add('hidden'),200));
+$('title-suggest').addEventListener('mousedown',e=>e.preventDefault());
+$('title-suggest').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('title').value=b.dataset.t;$('title-suggest').classList.add('hidden')});
+load();$('date').value=today();render();
+</script>
+</body>
+</html>
